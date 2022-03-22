@@ -1,7 +1,8 @@
 import streamlit as st
+import pandas as pd
+from rdflib import Graph
 
-
-st.set_page_config(page_title="Seoul Bike", page_icon= "🚲", layout="wide")
+st.set_page_config(page_title="Real Time Bike spots availability", page_icon= "🚲", layout="wide")
 
 st.markdown(""" <style>
 #MainMenu {visibility: hidden;}
@@ -10,131 +11,79 @@ footer {visibility: hidden;}
 
 RANDOM_SEED = 1
 
-st.title("**API Seoul Bike** 🚴")
+st.title("**Real Time Bike spots availability VLille** 🚴")
 
-st.write("This is an app where you can train a model for predicting the number of bike rented in a day.")
-st.write("""
-Currently Rental bikes are introduced in many urban cities for the enhancement of mobility comfort.
- It is important to make the rental bike available and accessible to the public at the right time as it lessens the waiting time. 
- Eventually, providing the city with a stable supply of rental bikes becomes a major concern. 
- The crucial part is the prediction of bike count required at each hour for the stable supply of rental bikes.
+# st.write("This is an app where you can train a model for predicting the number of bike rented in a day.")
+# st.write("""
+# Currently Rental bikes are introduced in many urban cities for the enhancement of mobility comfort.
+#  It is important to make the rental bike available and accessible to the public at the right time as it lessens the waiting time. 
+#  Eventually, providing the city with a stable supply of rental bikes becomes a major concern. 
+#  The crucial part is the prediction of bike count required at each hour for the stable supply of rental bikes.
 
- ** Data source: ** [Seoul Bike Sharing Demand Data Set](https://archive.ics.uci.edu/ml/datasets/Seoul+Bike+Sharing+Demand)
- """)
+#  ** Data source: ** [Seoul Bike Sharing Demand Data Set](https://archive.ics.uci.edu/ml/datasets/Seoul+Bike+Sharing+Demand)
+#  """)
 
-st.header("***Dataset Loading*** 💻")
+# st.header("***Dataset Loading*** 💻")
 
-with st.expander("Data informations", expanded=True):
-     st.write("""
-     The dataset must have these columns names in this order.
+# with st.expander("Data informations", expanded=True):
+#      st.write("""
+#      The dataset must have these columns names in this order.
 
-        - **Date** : Format DD/MM/YYYY
-        - **Rented Bike Count** : The number of bikes who will be rented
-        - **Hour** : From 0 to 23
-        - **Temperature(°C)** : float value
-        - **Humidity(%)** : float value
-        - **Wind speed (m/s)** : float value
-        - **Visibility (10m)** : float value
-        - **Dew point temperature(°C)** : float value
-        - **Solar Radiation (MJ/m2)** : float value
-        - **Rainfall(mm)** : float value
-        - **Snowfall (cm)** : float value
-        - **Seasons** : Winter, Spring, Summer, Automn
-        - **Holiday** : Holiday or No Holiday
-        - **Functioning Day** : Yes or No
-     """)
+#         - **Date** : Format DD/MM/YYYY
+#         - **Rented Bike Count** : The number of bikes who will be rented
+#         - **Hour** : From 0 to 23
+#         - **Temperature(°C)** : float value
+#         - **Humidity(%)** : float value
+#         - **Wind speed (m/s)** : float value
+#         - **Visibility (10m)** : float value
+#         - **Dew point temperature(°C)** : float value
+#         - **Solar Radiation (MJ/m2)** : float value
+#         - **Rainfall(mm)** : float value
+#         - **Snowfall (cm)** : float value
+#         - **Seasons** : Winter, Spring, Summer, Automn
+#         - **Holiday** : Holiday or No Holiday
+#         - **Functioning Day** : Yes or No
+#      """)
 
-uploaded_file = st.file_uploader("Import a csv file.", "csv")
+uploaded_file = st.file_uploader("Import a owl file.", "owl")
 
 drive_file = st.checkbox("Import the file directly from google drive (option not added yet)")
 
-if drive_file:
-    pass
-else:
-    if uploaded_file:
-        dataset = load_datas(uploaded_file, encoding="latin-1")
-        st.write(dataset.sample(9, random_state=RANDOM_SEED))
+g=Graph()
+g.parse("project_ontology_rdf_xml_full.owl")
 
+data=g.serialize(format="xml")
 
-### Visualisation
+# st.write(data)
 
-st.header("***Data Visualisation*** 🔎")
-st.write("You can visualise some of the correlation between the features in your datas here. Load a dataset to use this part.")
+# if drive_file:
+#     pass
+# else:
+#     if uploaded_file:
+#         dataset = pd.read_csv("project_ontology_rdf_xml_full.owl")
+#         st.write(dataset.sample(9, random_state=RANDOM_SEED))
 
-st.subheader("***Statistics***")
-st.write("Here you can see some statistics of your variables like the mean or the standard deviation.")
-if drive_file or uploaded_file:
-    col1, _ , col3 = st.columns([3, 1, 3])
+q="""
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX tg:<http://www.turnguard.com/functions#>
+PREFIX ns: <http://www.semanticweb.org/havyt/ontologies/2022/2/project_ontology#>
 
-    numerical_cols, categorical_cols = find_numerical_categorical_cols(dataset)
+SELECT ?nom ?adresse ?commune ?localisation
+WHERE { 
+       ?p ns:nom ?nom . 
+       ?p ns:adresse ?adresse . 
+       ?p ns:commune ?commune .
+       ?p ns:localisation ?localisation .}
 
-    feature_selected = col1.selectbox("Name of the feature", [None] + numerical_cols)
-    if feature_selected:
-        col3.write("Decription of the feature")
-        col3.write(dataset[feature_selected].describe())
+"""
+response=pd.DataFrame(columns=["nom","commune","localisation"])
+for r in g.query(q):
 
+    # st.write(r["nom"],"|",r["commune"],"|",r["localisation"])
+    response=response.append({'nom': r["nom"], 'commune':r["commune"],'localisation':r["localisation"]},ignore_index=True)
 
-
-st.subheader("***Plots***")
-st.write("Here you can visualize some plots to see the different repartitions or correlations between variables")
-
-if drive_file or uploaded_file:
-    distribution_plot(dataset)
-    violin_strip_plot(dataset)
-    scatter_features(dataset)
-
-
-### Sidebar components
-
-st.sidebar.header("ML Model Creation")
-
-side_expander_split = st.sidebar.expander("Split the dataset", expanded=True)
-test_size = side_expander_split.slider("test set size (%)", 0, 100, 20)
-
-models = {
-    "Linear regression":lr_param_selector,
-    "Support Vector Machine":svm_param_selector,
-    "Decision Tree":dt_param_selector,
-    "Random Forest":rf_param_selector,
-    "Xtreme Gradient Boosting":xgb_param_selector,
-}
-
-side_expander_train = st.sidebar.expander("Train a model", expanded=True)
-model_selected = side_expander_train.selectbox("Choose a model", models.keys())
-
-side_expender_tune = st.sidebar.expander("Tune the hyperparameters", expanded=True)
-with side_expender_tune:
-    model = models[model_selected](RANDOM_SEED)
-
-button = st.sidebar.button("Train model")
-###
-
-
-### Feature Engineering
-if drive_file or uploaded_file:
-    preprocessed_dataset = preprocess_dataset(dataset)
-    X, y = seperate_X_y(preprocessed_dataset)
-    X_train, X_test, y_train, y_test = split_dataset(X, y, test_size/100, RANDOM_SEED)
-    X_train_scaled, X_test_scaled, scaler = scaling_datas(X_train, X_test)
-
-###
-
-
-### Validation
-
-st.header("***Validation of the model*** ✔️")
-st.write("You must create a ML model with the sidebar for this section.")
-st.write("You can verify the accuracy of your model and avoid underfitting and overfitting in this part.")
-
-if (drive_file or uploaded_file) and button:
-    model = create_model(model, X_train_scaled, y_train)
-    y_pred = model.predict(X_test_scaled)
-    mse, r2 = print_metrics(y_test, y_pred)
-
-    col1, col3 = st.columns(2)
-
-    result_visu(y_test, y_pred, col1)
-    r2_score_plt(r2, col3)
-
-###
-
+st.write(response)
+print(response)
