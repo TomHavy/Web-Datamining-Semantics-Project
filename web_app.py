@@ -85,5 +85,5 @@ for r in g.query(q):
     # st.write(r["nom"],"|",r["commune"],"|",r["localisation"])
     response=response.append({'nom': r["nom"], 'commune':r["commune"],'localisation':r["localisation"]},ignore_index=True)
 
+st.write("First query: List the instances of the geolocated POI ")
 st.write(response)
-print(response)
