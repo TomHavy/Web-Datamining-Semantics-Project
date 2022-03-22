@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import streamlit as st
 import pandas as pd
 from rdflib import Graph
@@ -58,4 +59,3 @@ st.write("First query: List the instances of the geolocated POI ")
 
 
 st.write(response)
-
