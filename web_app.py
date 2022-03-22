@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+from numpy import tile
 import streamlit as st
 import pandas as pd
 from rdflib import Graph
@@ -13,10 +13,6 @@ footer {visibility: hidden;}
 RANDOM_SEED = 1
 
 st.title("**Real Time Bike spots availability VLille** 🚴")
-
-uploaded_file = st.file_uploader("Import a owl file.", "owl")
-
-drive_file = st.checkbox("Import the file directly from google drive (option not added yet)")
 
 g=Graph()
 g.parse("project_ontology_rdf_xml_full.owl")
@@ -47,8 +43,16 @@ WHERE {
        ?p ns:commune ?commune .
        ?p ns:localisation ?localisation .}
 
+SELECT ?p ?adresse
+WHERE { ?p ns:adresse ?adresse . 
+        ?p ns:commune "LILLE HELLEMMES" .}
 """
-response=pd.DataFrame(columns=["nom","commune","localisation"])
+
+var=["nom","adresse","localisation","commune","etat", "etatconnexion","libelle", "nbvelosdispo","nbplacesdispo"]
+
+select = st.selectbox("Which variable are you interested in?", var)
+
+response=pd.DataFrame(columns=[select])
 for r in g.query(q):
 
     # st.write(r["nom"],"|",r["commune"],"|",r["localisation"])
@@ -56,6 +60,6 @@ for r in g.query(q):
 
 st.write("First query: List the instances of the geolocated POI ")
 
-
+print(select)
 
 st.write(response)
