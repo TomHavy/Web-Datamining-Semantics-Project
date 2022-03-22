@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from rdflib import Graph
-
+import folium
 st.set_page_config(page_title="Real Time Bike spots availability", page_icon= "🚲", layout="wide")
 
 st.markdown(""" <style>
@@ -12,38 +12,6 @@ footer {visibility: hidden;}
 RANDOM_SEED = 1
 
 st.title("**Real Time Bike spots availability VLille** 🚴")
-
-# st.write("This is an app where you can train a model for predicting the number of bike rented in a day.")
-# st.write("""
-# Currently Rental bikes are introduced in many urban cities for the enhancement of mobility comfort.
-#  It is important to make the rental bike available and accessible to the public at the right time as it lessens the waiting time. 
-#  Eventually, providing the city with a stable supply of rental bikes becomes a major concern. 
-#  The crucial part is the prediction of bike count required at each hour for the stable supply of rental bikes.
-
-#  ** Data source: ** [Seoul Bike Sharing Demand Data Set](https://archive.ics.uci.edu/ml/datasets/Seoul+Bike+Sharing+Demand)
-#  """)
-
-# st.header("***Dataset Loading*** 💻")
-
-# with st.expander("Data informations", expanded=True):
-#      st.write("""
-#      The dataset must have these columns names in this order.
-
-#         - **Date** : Format DD/MM/YYYY
-#         - **Rented Bike Count** : The number of bikes who will be rented
-#         - **Hour** : From 0 to 23
-#         - **Temperature(°C)** : float value
-#         - **Humidity(%)** : float value
-#         - **Wind speed (m/s)** : float value
-#         - **Visibility (10m)** : float value
-#         - **Dew point temperature(°C)** : float value
-#         - **Solar Radiation (MJ/m2)** : float value
-#         - **Rainfall(mm)** : float value
-#         - **Snowfall (cm)** : float value
-#         - **Seasons** : Winter, Spring, Summer, Automn
-#         - **Holiday** : Holiday or No Holiday
-#         - **Functioning Day** : Yes or No
-#      """)
 
 uploaded_file = st.file_uploader("Import a owl file.", "owl")
 
@@ -86,4 +54,8 @@ for r in g.query(q):
     response=response.append({'nom': r["nom"], 'commune':r["commune"],'localisation':r["localisation"]},ignore_index=True)
 
 st.write("First query: List the instances of the geolocated POI ")
+
+
+
 st.write(response)
+
