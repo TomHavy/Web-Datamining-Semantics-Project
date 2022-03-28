@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 from rdflib import Graph
 from queries import *
+from functions import maj_datas
 
 st.set_page_config(page_title="Bike stations", page_icon= "🚲", layout="wide")
 
@@ -12,9 +13,9 @@ st.markdown(""" <style>
 footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
-RANDOM_SEED = 1
-
 st.title("**Bike stations in Rennes and Lyon** 🚴")
+
+weather_lyon,weather_rennes=maj_datas()
 
 g=Graph()
 g.parse("new_project_ontology_rdf_xml_full.owl")
@@ -28,6 +29,9 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX tg:<http://www.turnguard.com/functions#>
 PREFIX ns:<http://www.semanticweb.org/havyt/ontologies/2022/2/untitled-ontology-14#>
 """
+
+st.write(f"Lyon: \n** Temps :** {weather_lyon['Temps']}, ** Température :** {weather_lyon['Température']}°C, ** Température ressentie :** {weather_lyon['Température ressentie']}°C")
+st.write(f"Rennes: \n** Temps :** {weather_rennes['Temps']}, ** Température :** {weather_rennes['Température']}°C, ** Température ressentie :** {weather_rennes['Température ressentie']}°C")
 
 first_query(prefix,g)
 
