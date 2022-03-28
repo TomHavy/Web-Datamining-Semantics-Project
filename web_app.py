@@ -1,7 +1,4 @@
-from turtle import width
-from unittest import result
 import streamlit as st
-import pandas as pd
 from rdflib import Graph
 from queries import *
 from functions import maj_datas
