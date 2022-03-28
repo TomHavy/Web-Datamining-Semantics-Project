@@ -73,8 +73,8 @@ def create_ontologies(datas, subclass):
 
   individuals = []
 
-  for i in range(datas.shape[0]):
-    line = datas.iloc[i, :]
+  for i in range(len(datas)):
+    line = datas[i]
     
     line['nom'] = line['nom'].replace("&", "et")
     name = line['nom'].replace("/", "")
@@ -104,7 +104,8 @@ def create_complete_rdf(individus):
     with open('before.txt', 'r') as file:
         before = file.read()
 
-    return f"{before}\n{'\n'.join(individus)}\n</rdf:RDF>"
+    return "{}\n{}\n</rdf:RDF>".format(before, '\n'.join(individus))
+
 
 def maj_datas():
 
