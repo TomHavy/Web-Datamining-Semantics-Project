@@ -1,4 +1,4 @@
-# Web_app
+# Project_Web_datamining_semantics
 
 Make sure you have installed the necessary libraries, such as: -streamlit
                                                                -rdflib
