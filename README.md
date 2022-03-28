@@ -16,3 +16,4 @@ web_app.py contains the main code of the web page.
 
 queries.py contains all the queries present on the web page.
 
+Authors: Tom HAVYARIMANA - Oussama El Atrache
