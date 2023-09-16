@@ -1,7 +1,17 @@
 import streamlit as st
+
 from rdflib import Graph
-from queries import *
-from functions import maj_datas
+from core.functions import maj_datas
+from core.queries import(
+    first_query,
+    second_query,
+    third_query,
+    fourth_query,
+    interactive_map,
+    sixth_query,
+    seventh_query,
+)
+
 
 st.set_page_config(page_title="Bike stations", page_icon= "🚲", layout="wide")
 
