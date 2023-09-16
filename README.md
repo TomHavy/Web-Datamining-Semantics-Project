@@ -37,7 +37,8 @@ In order to run the streamlit web page, make sure you have installed the necessa
 Now, to run the streamlit web page, enter "streamlit run .\app\app.py" in a new terminal. A new page on your browser should open.
 
 ### 🎬 Demo
-![gif_demo_wdms](https://github.com/TomHavy/Web-Datamining-Semantics-Project/assets/67765175/727190fa-8695-4c4a-be2c-4333d1e7b28a)
+![gif_demo_wdms](https://github.com/TomHavy/Web-Datamining-Semantics-Project/assets/67765175/de8eb595-e2f5-4055-ba52-de0f33ec0ee9)
+
 
 You can also checkout the longer demo video (1min30) by downloading this file at: ".\documents\demo_video.mp4"
 
