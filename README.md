@@ -34,16 +34,21 @@ In order to run the streamlit web page, make sure you have installed the necessa
 - folium
 - streamlit_folium
 
-Now, to run the streamlit web page, enter "streamlit run .\web_app.py" in a new terminal. A new page on your browser should open.
+Now, to run the streamlit web page, enter "streamlit run .\app\app.py" in a new terminal. A new page on your browser should open.
 
-Check out the demo video (1min30) by downloading this file: "demo_video.mp4"
+### 🎬 Demo
+![gif_demo_wdms](https://github.com/TomHavy/Web-Datamining-Semantics-Project/assets/67765175/727190fa-8695-4c4a-be2c-4333d1e7b28a)
 
-functions.py contains the script to populate our ontology in RDF/XML format.
+You can also checkout the longer demo video (1min30) by downloading this file at: ".\documents\demo_video.mp4"
 
-web_app.py contains the main code of the web page.
+## 📂 Project Files
 
-queries.py contains all the queries present on the web page.
+- app\core\functions.py: Contains the script to populate our ontology in RDF/XML format.
 
-In the report, we describe our process for creating the ontology, including how we chose the classes and properties, and how we populated the ontology with data. We also discuss our approach to answering queries using SPARQL, and provide examples of the queries we used to analyze the data.
+- app\app.py: Contains the main code of the web page.
+
+- app\core\queries.py: Contains all the queries present on the web page.
+
+- documents\Rapport_Projet_Web_Datamining_semantics.pdf: Contains the report for this project in french. In it we describe our process for creating the ontology, including how we chose the classes and properties, and how we populated the ontology with data. We also discuss our approach to answering queries using SPARQL, and provide examples of the queries we used to analyze the data.
 
 Authors: Tom HAVYARIMANA - Oussama EL ATRACHE
