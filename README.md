@@ -1,4 +1,6 @@
-# 🚲 Web Datamining & Semantics Project
+<div align="center">
+  <h1>Web Datamining & Semantics Project</h1>
+</div>
 
 This is a project for the Web Datamining & Semantics course, created by Tom Havyarimana and Oussama El Atrache. The goal of this project is to create an ontology for bike-sharing data in the cities of Lyon and Rennes, and to use this ontology to answer queries about the data.
 
